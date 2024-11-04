@@ -5,7 +5,7 @@ import Admin from './components/Dashboards/Admin'
 const App = () => {
   return (
     <div>
-      <Admin/>
+      <Login/>
     </div>
   )
 }

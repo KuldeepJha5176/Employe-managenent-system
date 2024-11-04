@@ -6,7 +6,7 @@ const Login = () => {
     const submitHAndler = (e) =>{
       e.preventDefault()
       console.log("email is",email)
-      console.log("email is",password)
+      console.log("password is",password)
 
       setEmail("");
       setPassword("")
