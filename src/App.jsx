@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Login from './components/Auth/Login'
-import Admin from './components/Dashboards/Admin'
-import Employee from './components/Dashboards/Employee'
-import AuthContext from './Context/AuthProvider'
+import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
+import AdminDashboard from './components/Dashboard/AdminDashboard'
+import { AuthContext } from './Context/AuthProvider'
 
 const App = () => {
 
@@ -44,7 +44,7 @@ const App = () => {
   return (
     <>
       {!user ? <Login handleLogin={handleLogin} /> : ''}
-      {user == 'admin' ? <Admin changeUser={setUser} /> : (user == 'employee' ? <Employee changeUser={setUser} data={loggedInUserData} /> : null) }
+      {user == 'admin' ? <AdminDashboard changeUser={setUser} /> : (user == 'employee' ? <EmployeeDashboard changeUser={setUser} data={loggedInUserData} /> : null) }
     </>
   )
 }
