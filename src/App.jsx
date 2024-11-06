@@ -1,19 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Login from './components/Auth/Login'
-import Employee from './components/Dashboards/Employee'
 import Admin from './components/Dashboards/Admin'
-import { getLocalStorage, setLocalStorage } from './utils/localStorage'
+import Employee from './components/Dashboards/Employee'
+import AuthContext from './Context/AuthProvider'
+
 const App = () => {
 
-  useEffect( () => {
-    //setLocalStorage()
-    getLocalStorage()
+  const [user, setUser] = useState(null)
+  const [loggedInUserData, setLoggedInUserData] = useState(null)
+  const [userData,SetUserData] = useContext(AuthContext)
+
+  useEffect(()=>{
+    const loggedInUser = localStorage.getItem('loggedInUser')
     
-  },)
+    if(loggedInUser){
+      const userData = JSON.parse(loggedInUser)
+      setUser(userData.role)
+      setLoggedInUserData(userData.data)
+    }
+
+  },[])
+
+
+  const handleLogin = (email, password) => {
+    if (email == 'admin@me.com' && password == '123') {
+      setUser('admin')
+      localStorage.setItem('loggedInUser', JSON.stringify({ role: 'admin' }))
+    } else if (userData) {
+      const employee = userData.find((e) => email == e.email && e.password == password)
+      if (employee) {
+        setUser('employee')
+        setLoggedInUserData(employee)
+        localStorage.setItem('loggedInUser', JSON.stringify({ role: 'employee',data:employee }))
+      }
+    }
+    else {
+      alert("Invalid Credentials")
+    }
+  }
+
+
+
   return (
-    <div>
-      <Login/>
-    </div>
+    <>
+      {!user ? <Login handleLogin={handleLogin} /> : ''}
+      {user == 'admin' ? <Admin changeUser={setUser} /> : (user == 'employee' ? <Employee changeUser={setUser} data={loggedInUserData} /> : null) }
+    </>
   )
 }
 
